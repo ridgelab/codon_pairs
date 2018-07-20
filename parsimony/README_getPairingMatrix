@@ -1,0 +1,108 @@
+##########################
+
+Create Species Matrix of Identical Codon Pairing and Co-tRNA Pairing Relationships
+getPairingMatrix.py
+Created By: Lauren McKinnon
+Email: laurenmckinnon77@gmail.com
+
+##########################
+
+Purpose: Compare identical codon pairing or co-tRNA pairing between species. Create a TNT formatted file of the
+matrix of species relationships.
+
+##########################
+
+ARGUMENT OPTIONS:
+
+	-h, --help           		Show this help message and exit
+	-id INPUT DIRECTORY    	 	Input directory of the pairing in each species
+	-o  OUTPUT MATRIX FILE    	Output file name for the matrix
+	-oc OUTPUT CHARACTERS FILE  Output file name for the list of characters used in the matrix 
+	-c  CO-TRNA PAIRING			Do co-tRNA pairing instead of identical codon pairing
+
+##########################
+
+REQUIREMENTS:
+
+getPairingMatrix.py uses Python version 2.7
+
+Python libraries that must be installed include:
+1. sys
+2. os
+2. argparse
+3. Process, current_process, freeze_support, and Pool from multiprocessing
+
+If any of those libraries is not currently in your Python Path, use the following command:
+pip install --user [library_name]
+to install the library to your path.
+
+##########################
+
+Input Directory:
+This algorithm requires an input directory which contains a file for each species to be compared. These files contain 
+	each gene, followed by the codons used in the gene, the frequency that the codon is found, and the frequency that the codon
+	is found in pairing. The easiest way to obtain this input directory is by using the output from getPairing.py.
+
+Output File:
+An output file is not required. If an output file is not supplied, the species matrix
+	will be written to standard out.
+
+##########################
+
+USAGE:
+
+Typical usage requires the -id option.
+The algorithm will use all the files to compare the codon pairing between orthologs of different species. If a species contains a codon
+	that is found in pairing, it will be assigned a value of "1" in the matrix. If it is not found in pairing, it will be assigned a value
+	of "0". If the species does not have the codon for that given gene, it will be assigned a "?" in the matrix. This algorithm will
+	consider only codons that are parsimony informative. That is, they must be found in at least 4 species and that are found with 
+	both a "0" and "1" in at least one species respectively. This algorithm also will include only species that are found to contain 
+	at least 5% of these informative codons.
+
+Example input directory:
+	See the example directory called mammals_pairing.
+	
+By default, the species matrix is first stored in memory and then written to the output file 
+	or standard out.
+
+To include an output file containing all of the codons included in the matrix, use the "-oc" option followed by a name for the 
+	characters output file.
+
+By default, the algorithm creates the matrix using the names of the files as the species names. The algorithm can alternatively create the matrix
+	by assigning a number for each species (i.e. "Species_21") by using the "-on" option. This should be followed by a name for an output file
+	containing the key for the file name to its assigned species name. Note that this option is useful for species names that are long, given
+	that the maximum amount of characters for a TNT analysis is 30 characters long.
+
+By default, the algorithm computes the matrix using identical codon pairing. To perform the analysis using co-tRNA pairing, include
+	the "-c" option.
+
+
+Example usage:
+python getPairingMatrix.py -id testFiles/mammals_identical_codon_pairing  -o mammals_matrix.txt -oc mammals_characters.txt
+python getPairingMatrix.py -id testFiles/mammals_identical_codon_pairing
+python getPairingMatrix.py -id testFiles/mammals_cotrna_pairing -c -o mammals_cotrna_matrix.txt
+python getPairingMatrix.py -id testFiles/mammals_cotrna_pairing -o mammals_matrix.txt -on mammals_cotrna_names.txt
+
+Running the first of the above commands will produce an output file for the species matrix as well as an output file containing
+	the codons used in the matrix.
+
+Running the second of the above commands will write to standard out the species matrix.
+
+Running the third of the above commands will produce an output file for the co-trna species matrix.
+
+Running the fourth of the above commands will write to standard out the species matrix using a numbered system to name the species.
+	It will produce an output file for the key of file names to assigned species name.
+
+##########################
+
+This algorithm is free for all academic and non-profit research purposes. 
+
+We only ask that you please cite the following paper if you use this algorithm:
+CODON PAIRS ARE PHYLOGENETICALLY CONSERVED: Codon pairing as a novel phylogenetic character state for parsimony and alignment-free methods 
+
+For any for-profit usage, please contact Lauren McKinnon at laurenmckinnon77@gmail.com 
+
+##########################
+
+Thank you, and happy researching!!
+
